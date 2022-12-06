@@ -5,18 +5,35 @@ const password = "123456@";
 const month = ["1", "2", "3", "4", "5", "6"];
 const year = ["1997", "1998", "1999", "2000", "2001", "2002"];
 const gender = ["Male", "Female"];
-const { Client } = require("@notionhq/client")
+const { Client } = require("@notionhq/client");
 
 const notion = new Client({
   auth: "secret_C8UCm44Bg7yG6mugwzthrVwis86Ul6RVdmRnCmuKczN",
-})
+});
 
-const requestEmailAndPass = async () =>{
-  const myPage = await notion.databases.query({
+const requestEmailAndPass = async () => {
+  const emailDatas = await notion.databases.query({
     database_id: "e401e82ee5dd4e5f9774cacff850e9db",
-    
-  })
-  console.log(myPage);
+    filter: {
+      property: "used",
+      checkbox: {
+        equals: false,
+      },
+    },
+  });
+
+  console.log(emailDatas.results[0]);
+
+  const emailAndPassword = [];
+
+  for (const emailData of emailDatas.results) {
+    emailAndPassword.push({
+      email: emailData.properties.email.email,
+      password: emailData.properties.password.title[0].plain_text,
+    });
+  }
+
+  console.log("huynvq::=========>email and password", emailAndPassword);
 };
 
 const randomName = (lib) => {

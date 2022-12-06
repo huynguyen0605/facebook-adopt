@@ -5,6 +5,19 @@ const password = "123456@";
 const month = ["1", "2", "3", "4", "5", "6"];
 const year = ["1997", "1998", "1999", "2000", "2001", "2002"];
 const gender = ["Male", "Female"];
+const { Client } = require("@notionhq/client")
+
+const notion = new Client({
+  auth: "secret_C8UCm44Bg7yG6mugwzthrVwis86Ul6RVdmRnCmuKczN",
+})
+
+const requestEmailAndPass = async () =>{
+  const myPage = await notion.databases.query({
+    database_id: "e401e82ee5dd4e5f9774cacff850e9db",
+    
+  })
+  console.log(myPage);
+};
 
 const randomName = (lib) => {
   const randomIndex = Math.floor(Math.random() * lib.length);
@@ -85,17 +98,18 @@ const clickSignUpOnForm = async (page) => {
 };
 
 const fillSignUpForm = async (page) => {
-  await fillFirstName(page);
-  await fillSurname(page);
-  const email = await fillEmail(page);
-  await reFillEmail(page);
-  await fillPassword(page);
-  await selectDate(page);
-  await selectMonth(page);
-  await selectYear(page);
-  await clickGender(page);
-  await clickSignUpOnForm(page);
-  return email;
+  await requestEmailAndPass();
+  // await fillFirstName(page);
+  // await fillSurname(page);
+  // const email = await fillEmail(page);
+  // await reFillEmail(page);
+  // await fillPassword(page);
+  // await selectDate(page);
+  // await selectMonth(page);
+  // await selectYear(page);
+  // await clickGender(page);
+  // await clickSignUpOnForm(page);
+  // return email;
   // const random45 = 4 + Math.random();
   // const a = `value=${random45}`;
   // 'value=5'

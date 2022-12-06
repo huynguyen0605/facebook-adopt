@@ -22,33 +22,39 @@ const createContext = async (browser) => {
 
 (async () => {
   try {
-    const browser = await createBrowser();
-    const context = await createContext(browser);
+    // const browser = await createBrowser();
+    // const context = await createContext(browser);
 
-    const page = await openFacebook(context);
+    // const page = await openFacebook(context);
 
-    await clickSignUp(page);
+    // await clickSignUp(page);
 
-    const email = await fillSignUpForm(page);
-    const pageGmail = await createIconigtoPage(context);
-    pageGmail.setViewport({ width: 1280, height: 720 });
-    await pageGmail.goto("https://gmail.com", { waitUntil: "networkidle2" });
-    const selectorEmail = `[aria-label='Email or phone']`;
-    await pageGmail.waitForSelector(selectorEmail);
-    await pageGmail.focus(selectorEmail);
-    await pageGmail.type(selectorEmail, email);
-    const [button] = await pageGmail.$x("//span[contains(., 'Next')]");
+    const email = await fillSignUpForm();
+    // const pageGmail = await createIconigtoPage(context);
+    // pageGmail.setViewport({ width: 1280, height: 720 });
+    // await pageGmail.goto("https://gmail.com", { waitUntil: "networkidle2" });
+    // const selectorEmail = `[aria-label='Email or phone']`;
+    // await pageGmail.waitForSelector(selectorEmail);
+    // await pageGmail.focus(selectorEmail);
+    // await pageGmail.type(selectorEmail, email);
+    // const [button] = await pageGmail.$x("//span[contains(., 'Next')]");
 
-    if (button) {
-      await button.click();
-    }
-    // await pageGmail.waitForNavigation();
-    await pageGmail.waitForSelector(`[aria-busy='true']`, { hidden: true });
+    // if (button) {
+    //   await button.click();
+    // }
+    // // await pageGmail.waitForNavigation();
+    // await pageGmail.waitForSelector(`[aria-busy='true']`, { hidden: true });
 
-    const fillGmailPassword = `[aria-label='Enter your password']`;
-    await pageGmail.waitForSelector(fillGmailPassword);
-    await pageGmail.focus(fillGmailPassword);
-    await pageGmail.type(fillGmailPassword, "123");
+    // const fillGmailPassword = `[aria-label='Enter your password']`;
+    // await pageGmail.waitForSelector(fillGmailPassword);
+    // await pageGmail.focus(fillGmailPassword);
+    // await pageGmail.type(fillGmailPassword, "123");
+
+    // const [confirmPassWord] = await pageGmail.$x("//span[contains(., 'Next')]");
+
+    // if (confirmPassWord) {
+    //   await confirmPassWord.click();
+    // }
 
     // await browser.close();
   } catch (error) {

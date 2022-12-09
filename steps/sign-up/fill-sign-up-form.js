@@ -13,7 +13,7 @@ const notion = new Client({
 
 const requestEmailAndPass = async () => {
   const emailDatas = await notion.databases.query({
-    database_id: "e401e82ee5dd4e5f9774cacff850e9db",
+    database_id: "a5830ec4e5fc442188f50b00b77c014c",
     filter: {
       property: "used",
       checkbox: {
@@ -22,7 +22,7 @@ const requestEmailAndPass = async () => {
     },
   });
 
-  console.log(emailDatas.results[0]);
+  // console.log(emailDatas.results[0]);
 
   const emailAndPassword = [];
 
@@ -32,8 +32,8 @@ const requestEmailAndPass = async () => {
       password: emailData.properties.password.title[0].plain_text,
     });
   }
-
-  console.log("huynvq::=========>email and password", emailAndPassword);
+  return emailAndPassword;
+  // console.log("huynvq::=========>email and password", emailAndPassword);
 };
 
 const randomName = (lib) => {
@@ -61,19 +61,22 @@ const fillSurname = async (page) => {
   await page.type(selectorSurname, randomName(surNameLib));
 };
 
-const fillEmail = async (page) => {
+const fillEmail = async (page, mailPosition) => {
   const selectorEmail = `[aria-label='Mobile number or email address']`;
-  const email = randomName(emailLib);
+  const emailAndPassword = await requestEmailAndPass();
+  const email = emailAndPassword[mailPosition].email;
+  const password = emailAndPassword[mailPosition].password;
   await page.focus(selectorEmail);
   await page.type(selectorEmail, email);
-  return email;
+  return { email, password };
 };
 
-const reFillEmail = async (page) => {
+const reFillEmail = async (page, mailPosition) => {
   const selectorEnterEmail = `[aria-label='Re-enter email address']`;
-  const email = randomName(emailLib);
+  const { email, password } = await fillEmail(page, mailPosition);
   await page.focus(selectorEnterEmail);
   await page.type(selectorEnterEmail, email);
+  return { email, password };
 };
 
 const fillPassword = async (page) => {
@@ -114,19 +117,19 @@ const clickSignUpOnForm = async (page) => {
   }
 };
 
-const fillSignUpForm = async (page) => {
-  await requestEmailAndPass();
-  // await fillFirstName(page);
-  // await fillSurname(page);
+const fillSignUpForm = async (page, mailPosition) => {
+  // await requestEmailAndPass();
+  await fillFirstName(page);
+  await fillSurname(page);
   // const email = await fillEmail(page);
-  // await reFillEmail(page);
-  // await fillPassword(page);
-  // await selectDate(page);
-  // await selectMonth(page);
-  // await selectYear(page);
-  // await clickGender(page);
-  // await clickSignUpOnForm(page);
-  // return email;
+  const { email, password } = await reFillEmail(page, mailPosition);
+  await fillPassword(page);
+  await selectDate(page);
+  await selectMonth(page);
+  await selectYear(page);
+  await clickGender(page);
+  await clickSignUpOnForm(page);
+  return { email, password };
   // const random45 = 4 + Math.random();
   // const a = `value=${random45}`;
   // 'value=5'

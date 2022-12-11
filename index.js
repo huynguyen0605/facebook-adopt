@@ -1,78 +1,39 @@
-const clickSignUp = require("./steps/sign-up/click-sign-up");
-const fillSignUpForm = require("./steps/sign-up/fill-sign-up-form");
-const openFacebook = require("./steps/sign-up/open-facebook");
-const createIconigtoPage = require("./steps/utils/create-incognito-browser");
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-const { executablePath } = require("puppeteer");
+// const clickSignUp = require("./steps/sign-up/click-sign-up");
+// const fillSignUpForm = require("./steps/sign-up/fill-sign-up-form");
+// const openFacebook = require("./steps/sign-up/open-facebook");
+// const createIconigtoPage = require("./steps/utils/create-incognito-browser");
+const puppeteer = require('puppeteer-core');
+const GoLogin = require('gologin');
 
-const createBrowser = async () => {
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox"],
-    headless: false,
-    executablePath: executablePath(),
-  });
-  return browser;
-};
-
-const createContext = async (browser) => {
-  const context = await browser.createIncognitoBrowserContext();
-  return context;
-};
-
-const execute = async (mailPosition) => {
-  const browser = await createBrowser();
-  const context = await createContext(browser);
-
-  const page = await openFacebook(context);
-
-  await clickSignUp(page);
-
-  const { email, password } = await fillSignUpForm(page, mailPosition);
-  const pageGmail = await createIconigtoPage(context);
-  pageGmail.setViewport({ width: 1280, height: 720 });
-  await pageGmail.goto("https://gmail.com", { waitUntil: "networkidle2" });
-  const selectorEmail = `[aria-label='Email or phone']`;
-  await pageGmail.waitForSelector(selectorEmail);
-  await pageGmail.focus(selectorEmail);
-  await pageGmail.type(selectorEmail, email);
-  const [button] = await pageGmail.$x("//span[contains(., 'Next')]");
-
-  if (button) {
-    await button.click();
-  }
-  // await pageGmail.waitForNavigation();
-  await pageGmail.waitForSelector(`[aria-busy='true']`, { hidden: true });
-
-  const fillGmailPassword = `[aria-label='Enter your password']`;
-  await pageGmail.waitForSelector(fillGmailPassword);
-  await pageGmail.focus(fillGmailPassword);
-  await pageGmail.type(fillGmailPassword, password);
-
-  const [confirmPassWord] = await pageGmail.$x("//span[contains(., 'Next')]");
-
-  if (confirmPassWord) {
-    await confirmPassWord.click();
-  }
-
-  return { pageGmail, browser };
-};
 
 (async () => {
   try {
-    let i = 40;
-    while (true) {
-      const { pageGmail, browser } = await execute(i);
-      await pageGmail.waitForTimeout(5000);
-      const selectorRecover = `[aria-label='Recover account']`;
+  const GL = new GoLogin({
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk0ODNiNWIyNjRjMmNkYmE4MTk5YjYiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2Mzk0ODQ5OGNlY2M4MTE4YjZhNzFkY2YifQ.wh787BM2DW0dnZP26wFa5vLTrW_OvXwFVdCZkCTE9x4',
+      profile_id: '639483b5b264c2cce48199c6',
+  });
 
-      const exists = await pageGmail
-        .$eval(selectorRecover, () => true)
-        .catch(() => false);
-      if (exists) await browser.close();
-      i++;
-    }
-    // await browser.close();
+  const { status, wsUrl } = await GL.start().catch((e) => {
+    console.trace(e);
+    return { status: 'failure' };
+  });
+
+  if (status !== 'success') {
+    console.log('Invalid status');
+    return;
+  }
+
+  const browser = await puppeteer.connect({
+      browserWSEndpoint: wsUrl.toString(), 
+      ignoreHTTPSErrors: true,
+  });
+
+  const page = await browser.newPage();
+  await page.goto('https://myip.link/mini');   
+  console.log(await page.content());
+  await browser.close();
+  await GL.stop();
+
   } catch (error) {
     console.log("huynvq::=======>error", error.stack);
   }

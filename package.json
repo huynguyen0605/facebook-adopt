@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@notionhq/client": "^2.2.2",
+    "gologin": "^1.0.58",
     "puppeteer": "^19.2.2",
     "puppeteer-extra": "^3.3.4",
     "puppeteer-extra-plugin-stealth": "^2.11.1"

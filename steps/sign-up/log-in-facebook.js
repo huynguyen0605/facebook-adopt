@@ -16,7 +16,7 @@ const logInFacebook = async (page) => {
   const selectPassword = `[placeholder='Password']`;
   const waitPasswordTypingAppear = await page.$(selectPassword);
   if (waitPasswordTypingAppear !== null) {
-  // await page.waitForSelector(selectPassword);
+    // await page.waitForSelector(selectPassword);
     await page.focus(selectPassword);
     await page.type(selectPassword, passFacebook);
   }
@@ -32,14 +32,42 @@ const logInFacebook = async (page) => {
     await buttonConfirm.click();
   }
 
-  await page.waitForNavigation();
+  // await page.waitForNavigation();
 
   // Scroll to the bottom of the page
-  await page.evaluate(() => {
-    window.scrollTo(0, document.body.scrollHeight);
-  });
+  // await page.evaluate(() => {
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // });
 
+  const [createAccount] = await page.$x(
+    "//a[contains(., 'Create New Account')]"
+  );
 
+  if (createAccount) {
+    await page.click('[data-sigil="login_profile_form"]');
+    await page.waitForNavigation();
+  }
+
+  const [buttonLogIn] = await page.$x("//button[contains(., 'Log in')]");
+
+  if (buttonLogIn) {
+    await page.focus('[data-sigil="password-plain-text-toggle-input"]');
+    await page.type(
+      '[data-sigil="password-plain-text-toggle-input"]',
+      passFacebook
+    );
+    await buttonLogIn.click();
+  }
+
+  // await page.focus(`[name='Search']`);
+  // await page.type(`[name='Search']`, "dien may thien nam hoa");
+
+  // await page.waitForSelector('#u_0_3');
+  // // Click the "Like" button
+  // await page.click('#u_0_3');
+  // likePage('https://m.facebook.com/DienMayThienNamHoa.Online/?paipv=0&eav=AfYLsa5SDN84Btpi2x-WNDQ5VavAd_m_3nLgTR1w9XKT9_2mKjfcVTo7T-cmBLstncA');
+
+  // Close the browser
   // await page.waitForSelector('.class_name');
   // const page = await createIconigtoPage(context);
   // page.setViewport({ width: 1280, height: 720 });

@@ -9,47 +9,42 @@ const passFacebook = ["nguyenvanquanghuy"];
 const logInFacebook = async (page) => {
   const selectEmailFace = `[placeholder='Mobile number or email address']`;
   const waitEmailTypingAppear = await page.$(selectEmailFace);
+  console.log("waitEmail", waitEmailTypingAppear);
   if (waitEmailTypingAppear !== null) {
     await page.focus(selectEmailFace);
     await page.type(selectEmailFace, emailFace);
   }
   const selectPassword = `[placeholder='Password']`;
   const waitPasswordTypingAppear = await page.$(selectPassword);
+  console.log("waitPass", waitPasswordTypingAppear);
   if (waitPasswordTypingAppear !== null) {
     // await page.waitForSelector(selectPassword);
     await page.focus(selectPassword);
     await page.type(selectPassword, passFacebook);
   }
   const [button] = await page.$x("//button[contains(., 'Log In')]");
-
+  console.log("buttonLogIn", button);
   if (button) {
     await button.click();
   }
 
   const [buttonConfirm] = await page.$x("//button[contains(., 'OK')]");
-
+  console.log("buttonConfirm", buttonConfirm);
   if (buttonConfirm) {
     await buttonConfirm.click();
   }
 
-  // await page.waitForNavigation();
-
-  // Scroll to the bottom of the page
-  // await page.evaluate(() => {
-  //   window.scrollTo(0, document.body.scrollHeight);
-  // });
-
   const [createAccount] = await page.$x(
     "//a[contains(., 'Create New Account')]"
   );
-
+  console.log("creatAcc", createAccount);
   if (createAccount) {
     await page.click('[data-sigil="login_profile_form"]');
     await page.waitForNavigation();
   }
 
   const [buttonLogIn] = await page.$x("//button[contains(., 'Log in')]");
-
+  console.log("buttonLogin", buttonLogIn);
   if (buttonLogIn) {
     await page.focus('[data-sigil="password-plain-text-toggle-input"]');
     await page.type(
@@ -57,6 +52,44 @@ const logInFacebook = async (page) => {
       passFacebook
     );
     await buttonLogIn.click();
+  }
+
+  // try {
+  //   await page.waitForNavigation();
+  // } catch (error) {
+  //   console.log("error navigation", error);
+  // }
+
+  // Scroll to the bottom of the page
+  await page.evaluate(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  // const element = await page.$('a[role="button"]');
+  // await element.click();
+
+  const [watchButton] = await page.$x("//a[contains(., 'Watch')]");
+
+  console.log("watchButton", watchButton);
+
+  if (watchButton) {
+    await watchButton.click();
+  }
+
+  try {
+    await page.waitForNavigation({ timeout: 15000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  const playVideo = await page.$(
+    '[data-sigil="m-video-play-button playInlineVideo"]'
+  );
+
+  console.log("playVideo", playVideo);
+
+  if (playVideo) {
+    await playVideo.click();
   }
 
   // await page.focus(`[name='Search']`);

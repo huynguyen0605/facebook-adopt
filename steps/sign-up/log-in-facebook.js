@@ -77,7 +77,7 @@ const logInFacebook = async (page) => {
   }
 
   try {
-    await page.waitForNavigation({ timeout: 15000 });
+    await page.waitForNavigation({ timeout: 5000 });
   } catch (error) {
     console.log("error navigation", error);
   }
@@ -91,6 +91,42 @@ const logInFacebook = async (page) => {
   if (playVideo) {
     await playVideo.click();
   }
+
+  const clickLikeButton = await page.$(
+    '[data-sigil="touchable ufi-inline-like like-reaction-flyout"]'
+  );
+
+  console.log("clickLike", clickLikeButton);
+
+  if (clickLikeButton) {
+    await clickLikeButton.click();
+  }
+
+  const clickComment = await page.$(
+    '[data-sigil="feed-ufi-focus feed-ufi-trigger ufiCommentLink mufi-composer-focus"]'
+  );
+
+  console.log("clickComment", clickComment);
+
+  if (clickComment) {
+    await clickComment.click();
+  }
+
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  await page.click("#composerInput");
+  await page.type("#composerInput", "nice");
+  await page.waitForTimeout(1000);
+  const [clickPostButton] = await page.$x("//span[contains(., 'Post')]");
+  console.log("clickPost", clickPostButton);
+  if (clickPostButton) {
+    await clickPostButton.click();
+  }
+  await page.click("#MBackNavBarLeftArrow");
 
   // await page.focus(`[name='Search']`);
   // await page.type(`[name='Search']`, "dien may thien nam hoa");

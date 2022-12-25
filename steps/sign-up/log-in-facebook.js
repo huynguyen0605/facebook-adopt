@@ -174,12 +174,68 @@ const logInFacebook = async (page) => {
     console.log("error navigation", error);
   }
 
-  await page.click("#nuxChoosePhotoButton");
+  // await page.click("#nuxChoosePhotoButton");
   const inputProfilePic = await page.$('[id="nuxPicFileInput"]');
   console.log("choosepic", inputProfilePic);
-  await inputProfilePic.uploadFile(
-    "C://Users//alexg//OneDrive//Máy tính//tonton//toby.jpg"
+  if (inputProfilePic) {
+    await inputProfilePic.uploadFile(
+    "C://Users//Admin//Desktop//avatar//tonton.png"
+    // "C://Users//alexg//OneDrive//Máy tính//tonton//toby.jpg"
   );
+    const [upLoadPhoto] = await page.$x("//span[contains(., 'Use This Photo')]");
+    if (upLoadPhoto) {
+    await upLoadPhoto.click();
+    }
+  }
+
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  // await page.click(`[data-sigil="nav-popover profile_tab_jewel_button profile"]`);
+
+  // try {
+  //   await page.waitForNavigation({ timeout: 5000 });
+  // } catch (error) {
+  //   console.log("error navigation", error);
+  // }
+
+  const [addWallPhoto] = await page.$x("//span[contains(., 'Add photo')]");
+  console.log("addWallPhoto", addWallPhoto);
+  if (addWallPhoto) {
+    await page.click(`[data-sigil="cover-photo"]`);
+    // await addWallPhoto.click();
+  }
+
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  const [clickUpLoad] = await page.$x("//h1[contains(., 'Upload a Photo')]");
+  console.log("clickUpLoad", clickUpLoad);  
+  if (clickUpLoad) {
+    await clickUpLoad.click();
+  }
+
+  // try {
+  //   await page.waitForNavigation({ timeout: 5000 });
+  // } catch (error) {
+  //   console.log("error navigation", error);
+  // }
+  await page.waitForTimeout(1000);
+
+  const inputWallPhoto = await page.$('[id="nuxPicFileInput"]');
+  console.log("chooseWallPic", inputWallPhoto);
+  if (inputWallPhoto) {
+    await inputWallPhoto.uploadFile(
+    "C://Users//Admin//Desktop//avatar//wallpaper.jpg"
+  );
+  }
+
 
   // await page.focus(`[name='Search']`);
   // await page.type(`[name='Search']`, "dien may thien nam hoa");

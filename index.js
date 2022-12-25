@@ -11,8 +11,8 @@ const operateFacebook = require("./steps/sign-up/operate-facebook");
   try {
     const GL = new GoLogin({
       token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzllODIyNTRjYjkwYzg3ODEyYWNlNDYiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2MzllODI2NzFhNjBiNDFmNjJkYjU2YzcifQ.2tKIobCgIrCaUpZlSGq3mqGENjYzhR25sSF2KQV1clA",
-      profile_id: "639e82254cb90ccf212ace72",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2E1YTNjNDdhNGNjMWZkZDI5ZjFhNzEiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2M2E1YTQ1MzA5NTIzMzFjNWRmOTIzMWYifQ.QAgB2WpRLlghDZ0QiHg3abSA_wjb9nbfVMltFZRkYuI",
+      profile_id: "63a5a3c47a4cc104f99f1a9e",
     });
 
     const { status, wsUrl } = await GL.start().catch((e) => {

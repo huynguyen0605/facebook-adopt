@@ -1,5 +1,7 @@
+const { ElementHandle } = require("puppeteer");
+
 const emailFace = ["alexgootvn3@gmail.com"];
-const passFacebook = ["nguyenvanquanghuy"];
+const passFacebook = ["nguyenvanquanghuy1"];
 // const puppeteer = require("puppeteer-extra");
 // const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 // const { executablePath } = require("puppeteer");
@@ -28,6 +30,24 @@ const logInFacebook = async (page) => {
     await button.click();
   }
 
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  const [oneTapLogIn] = await page.$x("//span[contains(., 'OK')]");
+  if (oneTapLogIn) {
+    await oneTapLogIn.click();
+    // await page.waitForNavigation({ timeout: 5000 });
+  }
+
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
   const [buttonConfirm] = await page.$x("//button[contains(., 'OK')]");
   console.log("buttonConfirm", buttonConfirm);
   if (buttonConfirm) {
@@ -52,6 +72,15 @@ const logInFacebook = async (page) => {
       passFacebook
     );
     await buttonLogIn.click();
+    const [oneTapLogIn1] = await page.$x("//span[contains(., 'OK')]");
+    if (oneTapLogIn1) {
+      await oneTapLogIn1.click();
+      try {
+        await page.waitForNavigation({ timeout: 5000 });
+      } catch (error) {
+        console.log("error navigation", error);
+      }
+    }
   }
 
   // try {
@@ -120,13 +149,37 @@ const logInFacebook = async (page) => {
 
   await page.click("#composerInput");
   await page.type("#composerInput", "nice");
-  await page.waitForTimeout(1000);
-  const [clickPostButton] = await page.$x("//span[contains(., 'Post')]");
-  console.log("clickPost", clickPostButton);
-  if (clickPostButton) {
-    await clickPostButton.click();
-  }
+  // await page.waitForTimeout(1000);
+  // const [clickPostButton] = await page.$x("//span[contains(., 'Post')]");
+  // console.log("clickPost", clickPostButton);
+  // if (clickPostButton) {
+  //   await clickPostButton.click();
+  // }
   await page.click("#MBackNavBarLeftArrow");
+  const faceProfile = `[data-sigil="messenger_icon"]`;
+  console.log("faceProfile", faceProfile);
+  await page.click(faceProfile);
+
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  await page.click(`[aria-label="Edit Profile Picture"]`);
+
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+
+  await page.click("#nuxChoosePhotoButton");
+  const inputProfilePic = await page.$('[id="nuxPicFileInput"]');
+  console.log("choosepic", inputProfilePic);
+  await inputProfilePic.uploadFile(
+    "C://Users//alexg//OneDrive//Máy tính//tonton//toby.jpg"
+  );
 
   // await page.focus(`[name='Search']`);
   // await page.type(`[name='Search']`, "dien may thien nam hoa");

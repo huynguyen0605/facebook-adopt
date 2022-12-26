@@ -157,7 +157,6 @@ const logInFacebook = async (page) => {
   // }
   await page.click("#MBackNavBarLeftArrow");
   const faceProfile = `[data-sigil="messenger_icon"]`;
-  console.log("faceProfile", faceProfile);
   await page.click(faceProfile);
 
   try {
@@ -182,7 +181,7 @@ const logInFacebook = async (page) => {
     "C://Users//Admin//Desktop//avatar//tonton.png"
     // "C://Users//alexg//OneDrive//Máy tính//tonton//toby.jpg"
   );
-    const [upLoadPhoto] = await page.$x("//span[contains(., 'Use This Photo')]");
+    const [upLoadPhoto] = await page.$x("//button[contains(., 'Use This Photo')]");
     if (upLoadPhoto) {
     await upLoadPhoto.click();
     }
@@ -202,12 +201,14 @@ const logInFacebook = async (page) => {
   //   console.log("error navigation", error);
   // }
 
-  const [addWallPhoto] = await page.$x("//span[contains(., 'Add photo')]");
-  console.log("addWallPhoto", addWallPhoto);
-  if (addWallPhoto) {
-    await page.click(`[data-sigil="cover-photo"]`);
-    // await addWallPhoto.click();
-  }
+  const addWallPhoto = `[aria-label="Edit Cover Photo"]`;
+  // console.log("addWallPhoto", addWallPhoto);
+  await page.waitForSelector(addWallPhoto);
+  await page.click(addWallPhoto);
+  // if (addWallPhoto) {
+  //   await page.click(`[data-sigil="cover-photo"]`);
+  //   // await addWallPhoto.click();
+  // }
 
   try {
     await page.waitForNavigation({ timeout: 5000 });
@@ -221,11 +222,6 @@ const logInFacebook = async (page) => {
     await clickUpLoad.click();
   }
 
-  // try {
-  //   await page.waitForNavigation({ timeout: 5000 });
-  // } catch (error) {
-  //   console.log("error navigation", error);
-  // }
   await page.waitForTimeout(1000);
 
   const inputWallPhoto = await page.$('[id="nuxPicFileInput"]');
@@ -236,6 +232,21 @@ const logInFacebook = async (page) => {
   );
   }
 
+  const [setAsCoverPhoto] = await page.$x("//button[contains(., 'Set as Cover Photo')]");
+  if (setAsCoverPhoto) {
+  await setAsCoverPhoto.click();
+  }
+
+  await page.waitForTimeout(1000);
+  await page.goto("https://m.facebook.com/DienMayThienNamHoa.Online/?paipv=0&eav=AfYLsa5SDN84Btpi2x-WNDQ5VavAd_m_3nLgTR1w9XKT9_2mKjfcVTo7T-cmBLstncA");
+  try {
+    await page.waitForNavigation({ timeout: 5000 });
+  } catch (error) {
+    console.log("error navigation", error);
+  }
+  const idLikeButton = `[aria-label="Like button"]`;
+  await page.waitForSelector(idLikeButton);
+  await page.click(idLikeButton);
 
   // await page.focus(`[name='Search']`);
   // await page.type(`[name='Search']`, "dien may thien nam hoa");

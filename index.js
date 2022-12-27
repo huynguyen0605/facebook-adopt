@@ -6,6 +6,7 @@ const puppeteer = require("puppeteer-core");
 const GoLogin = require("gologin");
 const logInFacebook = require("./steps/sign-up/log-in-facebook");
 const operateFacebook = require("./steps/sign-up/operate-facebook");
+const scrollFaceBook = require("./steps/behavior/scroll");
 
 (async () => {
   try {
@@ -34,7 +35,9 @@ const operateFacebook = require("./steps/sign-up/operate-facebook");
     await page.goto("https://m.facebook.com");
     console.log(await page.content());
 
-    await logInFacebook(page);
+    await scrollFaceBook(page, 400);
+
+    // await logInFacebook(page);
 
     await operateFacebook(page);
 

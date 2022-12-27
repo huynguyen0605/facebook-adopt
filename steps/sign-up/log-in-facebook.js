@@ -178,12 +178,14 @@ const logInFacebook = async (page) => {
   console.log("choosepic", inputProfilePic);
   if (inputProfilePic) {
     await inputProfilePic.uploadFile(
-    "C://Users//Admin//Desktop//avatar//tonton.png"
-    // "C://Users//alexg//OneDrive//Máy tính//tonton//toby.jpg"
-  );
-    const [upLoadPhoto] = await page.$x("//button[contains(., 'Use This Photo')]");
+      // "C://Users//Admin//Desktop//avatar//tonton.png"
+      "C://Users//alexg//OneDrive//Máy tính//tonton//toby.png"
+    );
+    const [upLoadPhoto] = await page.$x(
+      "//button[contains(., 'Use This Photo')]"
+    );
     if (upLoadPhoto) {
-    await upLoadPhoto.click();
+      await upLoadPhoto.click();
     }
   }
 
@@ -193,6 +195,7 @@ const logInFacebook = async (page) => {
     console.log("error navigation", error);
   }
 
+  await page.waitForTimeout(2000);
   // await page.click(`[data-sigil="nav-popover profile_tab_jewel_button profile"]`);
 
   // try {
@@ -202,6 +205,8 @@ const logInFacebook = async (page) => {
   // }
 
   const addWallPhoto = `[aria-label="Edit Cover Photo"]`;
+  const appearAddWallPhoto = await page.$(addWallPhoto);
+  console.log("appearAddWall", appearAddWallPhoto);
   // console.log("addWallPhoto", addWallPhoto);
   await page.waitForSelector(addWallPhoto);
   await page.click(addWallPhoto);
@@ -217,7 +222,7 @@ const logInFacebook = async (page) => {
   }
 
   const [clickUpLoad] = await page.$x("//h1[contains(., 'Upload a Photo')]");
-  console.log("clickUpLoad", clickUpLoad);  
+  console.log("clickUpLoad", clickUpLoad);
   if (clickUpLoad) {
     await clickUpLoad.click();
   }
@@ -228,17 +233,22 @@ const logInFacebook = async (page) => {
   console.log("chooseWallPic", inputWallPhoto);
   if (inputWallPhoto) {
     await inputWallPhoto.uploadFile(
-    "C://Users//Admin//Desktop//avatar//wallpaper.jpg"
-  );
+      "C://Users//alexg//OneDrive//Máy tính//tonton//wall.jpg"
+      // "C://Users//Admin//Desktop//avatar//wallpaper.jpg"
+    );
   }
 
-  const [setAsCoverPhoto] = await page.$x("//button[contains(., 'Set as Cover Photo')]");
+  const [setAsCoverPhoto] = await page.$x(
+    "//button[contains(., 'Set as Cover Photo')]"
+  );
   if (setAsCoverPhoto) {
-  await setAsCoverPhoto.click();
+    await setAsCoverPhoto.click();
   }
 
   await page.waitForTimeout(1000);
-  await page.goto("https://m.facebook.com/DienMayThienNamHoa.Online/?paipv=0&eav=AfYLsa5SDN84Btpi2x-WNDQ5VavAd_m_3nLgTR1w9XKT9_2mKjfcVTo7T-cmBLstncA");
+  await page.goto(
+    "https://m.facebook.com/DienMayThienNamHoa.Online/?paipv=0&eav=AfYLsa5SDN84Btpi2x-WNDQ5VavAd_m_3nLgTR1w9XKT9_2mKjfcVTo7T-cmBLstncA"
+  );
   try {
     await page.waitForNavigation({ timeout: 5000 });
   } catch (error) {

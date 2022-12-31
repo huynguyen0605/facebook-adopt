@@ -1,4 +1,7 @@
 const { ElementHandle } = require("puppeteer");
+const clickAction = require("../behavior/click");
+const typeAction = require("../behavior/type");
+const waitAction = require("../behavior/wait");
 
 const emailFace = ["alexgootvn3@gmail.com"];
 const passFacebook = ["nguyenvanquanghuy1"];
@@ -147,8 +150,11 @@ const logInFacebook = async (page) => {
     console.log("error navigation", error);
   }
 
-  await page.click("#composerInput");
-  await page.type("#composerInput", "nice");
+  const idClickComment = "#composerInput";
+  await page.click(idClickComment);
+  await typeAction(page, idClickComment, "n");
+  // await page.type("#composerInput", "nice");
+
   // await page.waitForTimeout(1000);
   // const [clickPostButton] = await page.$x("//span[contains(., 'Post')]");
   // console.log("clickPost", clickPostButton);
@@ -165,7 +171,8 @@ const logInFacebook = async (page) => {
     console.log("error navigation", error);
   }
 
-  await page.click(`[aria-label="Edit Profile Picture"]`);
+  // await page.click(`[aria-label="Edit Profile Picture"]`);
+  await clickAction(page, `[aria-label="Edit Profile Picture"]`);
 
   try {
     await page.waitForNavigation({ timeout: 5000 });
@@ -189,11 +196,7 @@ const logInFacebook = async (page) => {
     }
   }
 
-  try {
-    await page.waitForNavigation({ timeout: 5000 });
-  } catch (error) {
-    console.log("error navigation", error);
-  }
+  await waitAction(page);
 
   await page.waitForTimeout(2000);
   // await page.click(`[data-sigil="nav-popover profile_tab_jewel_button profile"]`);

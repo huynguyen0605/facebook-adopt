@@ -12,8 +12,8 @@ const scrollFaceBook = require("./steps/behavior/scroll");
   try {
     const GL = new GoLogin({
       token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2E1YTNjNDdhNGNjMWZkZDI5ZjFhNzEiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2M2E1YTQ1MzA5NTIzMzFjNWRmOTIzMWYifQ.QAgB2WpRLlghDZ0QiHg3abSA_wjb9nbfVMltFZRkYuI",
-      profile_id: "63a5a3c47a4cc104f99f1a9e",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2FmZTQ0OTZkYmE1OTEyNDM0ZDRlNTUiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2M2FmZTRjMDJkZjBiZjYyOTg4YjU5ZmMifQ.MiUX28lvBvLfpKNw_p0dTG7mmutXyP2Av8zpp5cU25U",
+      profile_id: "63afe4496dba5940384d4e6e",
     });
 
     const { status, wsUrl } = await GL.start().catch((e) => {
@@ -35,9 +35,9 @@ const scrollFaceBook = require("./steps/behavior/scroll");
     await page.goto("https://m.facebook.com");
     console.log(await page.content());
 
-    await scrollFaceBook(page, 400);
+    await logInFacebook(page);
 
-    // await logInFacebook(page);
+    // await scrollFaceBook(page, 400);
 
     await operateFacebook(page);
 

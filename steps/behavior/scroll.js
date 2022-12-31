@@ -1,4 +1,4 @@
-const scrollFaceBook = async function (page, distance) {
+const scrollFaceBook = async (page, distance) => {
   // await page.evaluate(() => { window.scrollTo(0, distance); });
 
   console.log("huynvq::=======>scrollFaceBook", page, distance);

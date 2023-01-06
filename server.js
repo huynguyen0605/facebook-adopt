@@ -1,22 +1,53 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const logInFacebook = require("./steps/sign-up/log-in-facebook");
 
 const app = express();
 app.use(bodyParser.json());
 
 const scenarios = [];
 
+const steps = [
+  {
+    id: "a",
+    name: "Đăng nhập facebook",
+    functionName: "loginFacebook",
+  },
+  {
+    id: "b",
+    name: "Lướt newfeed",
+    functionName: "scrollFacebook",
+  },
+];
+app.get("/scenarios", (req, res) => {
+  res.json({
+    scenarios: scenarios,
+  });
+});
+
+app.get("/steps", (req, res) => {
+  res.json({
+    steps: steps,
+  });
+});
+
 app.post("/create-scenario", (req, res) => {
-  const { steps0, steps1 } = req.body;
+  const { name, steps } = req.body;
 
-  console.log(steps0, steps1);
+  const newScenario = [
+    {
+      id: `scenario${scenarios.length}`,
+      name,
+      steps,
+    },
+  ];
+  // const listScenarios = scenarios.concat(newScenario);
 
-  const newScenario = {
-    steps: [steps0, steps1],
-  };
+  // console.log(steps0, steps1);
+  scenarios.push(newScenario);
 
-  scenarios.push({
-    [`scenario-${scenarios.length}`]: newScenario,
+  res.json({
+    status: "OK",
   });
 
   /**
@@ -26,10 +57,6 @@ app.post("/create-scenario", (req, res) => {
    * }
    * }
    */
-
-  res.json({
-    code: "fail",
-  });
 });
 
 app.get("/get-scenario", (req, res) => {

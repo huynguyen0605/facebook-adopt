@@ -41,27 +41,37 @@ app.post("/create-scenario", (req, res) => {
       steps,
     },
   ];
-  // const listScenarios = scenarios.concat(newScenario);
 
-  // console.log(steps0, steps1);
-  scenarios.push(newScenario);
+  scenarios.push(newScenario[0]);
 
   res.json({
     status: "OK",
   });
 
-  /**
-   * {
-   * scenario-0: {
-   *  steps: ["đăng nhập facebook", "xem phim"]
-   * }
-   * }
-   */
 });
 
 app.get("/get-scenario", (req, res) => {
   res.json({
     scenarios: scenarios,
+  });
+});
+
+const runScript = [];
+
+app.post("/run-scenario", (req, res) => {
+  const { name } = req.body;
+  const chosenScenario = [
+    {name}
+  ]
+  // runScript = [...runScript, ...chosenScenario];
+  runScript.push(chosenScenario);
+  // if (chosenScenario.name == scenarios[0].name){
+  //   runScript.push(chosenScenario);
+  // } 
+
+  res.json({
+    status: "Succesfully",
+    runScript: runScript,
   });
 });
 

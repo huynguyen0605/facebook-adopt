@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const logInFacebook = require("./steps/sign-up/log-in-facebook");
+const openBrowser = require(".");
 
 const app = express();
 app.use(bodyParser.json());
@@ -58,7 +58,7 @@ app.get("/get-scenario", (req, res) => {
 
 const runScript = [];
 
-app.post("/run-scenario", (req, res) => {
+app.post("/run-scenario", async (req, res) => {
   const { name } = req.body;
   const chosenScenario = [
     {name}
@@ -68,6 +68,8 @@ app.post("/run-scenario", (req, res) => {
   // if (chosenScenario.name == scenarios[0].name){
   //   runScript.push(chosenScenario);
   // } 
+  await openBrowser();
+
 
   res.json({
     status: "Succesfully",

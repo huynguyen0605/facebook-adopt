@@ -8,7 +8,7 @@ const logInFacebook = require("./steps/sign-up/log-in-facebook");
 const operateFacebook = require("./steps/sign-up/operate-facebook");
 const scrollFaceBook = require("./steps/behavior/scroll");
 
-(async () => {
+const openBrowser = async () => {
   try {
     const GL = new GoLogin({
       token:
@@ -46,4 +46,6 @@ const scrollFaceBook = require("./steps/behavior/scroll");
   } catch (error) {
     console.log("huynvq::=======>error", error.stack);
   }
-})();
+};
+
+module.exports = openBrowser;

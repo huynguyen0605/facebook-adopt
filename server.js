@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const openBrowser = require(".");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 const scenarios = [];
@@ -32,13 +34,12 @@ app.get("/steps", (req, res) => {
 });
 
 app.post("/create-scenario", (req, res) => {
-  const { name, steps } = req.body;
+  const { stepIds } = req.body;
 
   const newScenario = [
     {
       id: `scenario${scenarios.length}`,
-      name,
-      steps,
+      stepIds,
     },
   ];
 
@@ -47,7 +48,6 @@ app.post("/create-scenario", (req, res) => {
   res.json({
     status: "OK",
   });
-
 });
 
 app.get("/get-scenario", (req, res) => {
@@ -60,16 +60,13 @@ const runScript = [];
 
 app.post("/run-scenario", async (req, res) => {
   const { name } = req.body;
-  const chosenScenario = [
-    {name}
-  ]
+  const chosenScenario = [{ name }];
   // runScript = [...runScript, ...chosenScenario];
   runScript.push(chosenScenario);
   // if (chosenScenario.name == scenarios[0].name){
   //   runScript.push(chosenScenario);
-  // } 
+  // }
   await openBrowser();
-
 
   res.json({
     status: "Succesfully",
@@ -77,6 +74,6 @@ app.post("/run-scenario", async (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server listening on port 3000");
+app.listen(3001, () => {
+  console.log("Server listening on port 3001");
 });

@@ -38,12 +38,25 @@ app.post("/create-scenario", (req, res) => {
 
   const newScenario = [
     {
-      id: `scenario${scenarios.length}`,
+      id: `${scenarios.length}`,
       stepIds,
     },
   ];
 
   scenarios.push(newScenario[0]);
+
+  res.json({
+    status: "OK",
+  });
+});
+
+
+app.delete(`/delete-scenario/${ScenarioIds}`, (req, res) => {
+  
+  const scenarioId = parseInt(req.params.ScenarioIds);
+
+  scenarios = scenarios.filter(scenario => scenario.id !== scenarioId);
+
 
   res.json({
     status: "OK",
@@ -59,8 +72,8 @@ app.get("/get-scenario", (req, res) => {
 const runScript = [];
 
 app.post("/run-scenario", async (req, res) => {
-  const { name } = req.body;
-  const chosenScenario = [{ name }];
+  const { ScenarioId } = req.body;
+  const chosenScenario = [{ ScenarioId }];
   // runScript = [...runScript, ...chosenScenario];
   runScript.push(chosenScenario);
   // if (chosenScenario.name == scenarios[0].name){

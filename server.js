@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const scenarios = [];
+let scenarios = [];
 
 const steps = [
   {
@@ -50,13 +50,10 @@ app.post("/create-scenario", (req, res) => {
   });
 });
 
+app.delete(`/delete-scenario/:scenarioIds`, (req, res) => {
+  const scenarioId = parseInt(req.params.scenarioIds);
 
-app.delete(`/delete-scenario/${ScenarioIds}`, (req, res) => {
-  
-  const scenarioId = parseInt(req.params.ScenarioIds);
-
-  scenarios = scenarios.filter(scenario => scenario.id !== scenarioId);
-
+  scenarios = scenarios.filter((scenario) => scenario.id !== scenarioId);
 
   res.json({
     status: "OK",

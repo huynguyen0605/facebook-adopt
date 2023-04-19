@@ -1,10 +1,11 @@
 var request = require("request");
+var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDM4MjllZTM4NDRiNWI2OGQ1ZGFlMGYiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2NDM4MmEwNzcwZmVjNmZjMDk3OGFhNjIifQ.b5FedFX3YmS84vpmeyCAsderSKVacdVDYXtNnKLOk88"
 var options = {
   method: "POST",
   url: "https://api.gologin.com/browser",
   headers: {
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2E1YTNjNDdhNGNjMWZkZDI5ZjFhNzEiLCJ0eXBlIjoiZGV2Iiwiand0aWQiOiI2M2E1YTQ1MzA5NTIzMzFjNWRmOTIzMWYifQ.QAgB2WpRLlghDZ0QiHg3abSA_wjb9nbfVMltFZRkYuI",
+      `Bearer ${token}`,
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
@@ -78,7 +79,18 @@ var options = {
     chromeExtensions: ["string"],
   }),
 };
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-});
+async function getProfile(page) {
+return new Promise(function(resolve,reject){
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    // console.log(response.body);
+    const responseBody = JSON.parse(response.body);
+    const idProfile = responseBody.id;
+    // console.log(idProfile);
+    resolve(idProfile);
+    }
+  );
+})
+
+}
+module.exports = getProfile;

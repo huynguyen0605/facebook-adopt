@@ -5,7 +5,7 @@ const cors = require("cors");
 const {google} = require('googleapis');
 
 // Load credentials from JSON key file
-const creds = require('E://Workspace//Tool//facebook-adopt//credentialskey.json');
+const creds = require('./credentialskey.json');
 
 const app = express();
 app.use(cors());
